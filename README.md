@@ -10,6 +10,7 @@
 ## Table of Contents 
 ### *   [Resources](#resources)
 ### *   [Data Collection](#DataCollection)
+### *   [Data Collection](#DataCollection)
 
 <a name="resources"></a>  
 
