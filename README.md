@@ -1,128 +1,111 @@
 # 👯 Customer Segmentation: Project Overview 
-* End to end project reasearching the effects personal attributes have on the diagnosis of diabetes.
-* Optimised KNN, SVC, Decision Tree, and Random Forest Regressors using GridsearchCV and RandomizedSearchCV to reach the best model. 
-* Built a stakeholder facing visual deployment of model to predict churn of new customers 
-
-* Deployed Model in Power BI for Business Intelligence analysis 
-
-
-[Use Deployed Model](https://p7-diabetes-model.herokuapp.com/)
+* Unsupervised learning project to apply groupings to customer data 
 
 ## Table of Contents 
-### *   [Resources](#resources)
-### *   [Data Collection](#DataCollection)
-### *   [Data Collection](#DataCollection)
+[Resources](#resources)<br>
+[Data Collection](#DataCollection)<br>
+[Data Pre-processing](#DataPre-processing)<br>
+[Data Warehousing](#DataWarehousing)<br>
+[Exploratory data analysis](#EDA)<br>
+[Feature Engineering](#FeatEng)<br>
+[ML/DL Model Building](#ModelBuild)<br>
+[Deployment](#ModelDeploy)<br> 
+[Project Management (Agile | Scrum)](#Prjmanage)<br>
+[Project Evaluation](#PrjEval)<br>
+[Looking Ahead](#Lookahead)<br>
+[Questions | Contact me ](#Lookahead)<br>
 
-<a name="resources"></a>  
+<a name="Resources"></a>  
 
 ## Resources Used
-**Python 3, SQL Server, Tableau** 
+**Python 3, PostgreSQL** 
 
-[**Anaconda Packages:**](requirements.txt) **pandas, numpy, pandas_profiling, ipywidgets, sklearn, matplotlib, seaborn, sqlalchemy, pyodbc, kaggle, pickle, lxml**   
-
+[**Anaconda Packages:**](requirements.txt) **pandas numpy pandas_profiling ipywidgets sklearn matplotlib seaborn sqlalchemy kaggle psycopg2 ipykernel**<br><br>
+Powershell command for installing anaconda packages used for this project    
+```powershell
+pip install pandas numpy pandas_profiling ipywidgets sklearn matplotlib seaborn sqlalchemy kaggle psycopg2 ipykernel
+```
 
 <a name="DataCollection"></a>  
 
-## [Data Collection](Code/P7_Code.ipynb)
-Data imported using kaggle API <br>
+## [Data Collection](Code/P13_Code.ipynb)
+Powershell command for data import using kaggle API <br>
+```powershell
+!kaggle datasets download -d vjchoudhary7/customer-segmentation-tutorial-in-python -p ..\Data --unzip 
 ```
-!kaggle datasets download -d mathchi/diabetes-data-set -p ..\Data --unzip 
-```
-[Data source link](https://www.kaggle.com/mathchi/diabetes-data-set)
-[Data](Data/diabetes.csv)
-*  Rows: 768 | Columns: 9
-    *   Pregnancies                   
-    *   Glucose                      
-    *   BloodPressure                 
-    *   SkinThickness                 
-    *   Insulin                      
-    *   BMI                    
-    *   DiabetesPedigreeFunction    
-    *   Age                          
-    *   Outcome                       
+[Data source link](https://www.kaggle.com/vjchoudhary7/customer-segmentation-tutorial-in-python)
+[Data](Data/Mall_Customers.csv)
+*  Rows: 200 | Columns: 5
+    *   CustomerID                
+    *   Gender                    
+    *   Age                       
+    *   Annual Income (k$)        
+    *   Spending Score (1-100)    
 
+ 
 
-## [Data Pre-processing](Code/P7_Code.ipynb)
-After I had all the data I needed, I needed to check it was ready for exploration and later modelling. I made the following changes and created the following variables:   
+<a name="DataPre-processing"></a>  
+
+## [Data Pre-processing](Code/joining_data.sql)
+After I had all the data I needed, I needed to check it was ready for exploration and later modelling.   
 *   General NULL and data validity checks  
 
+<a name="DataWarehousing"></a>
 
-## [Data Warehousing](Code/P7_Code.ipynb)
-I warehouse all data in a SQL Server instance for later use and reference.
+## [Data Warehousing](Code/P6_Code.ipynb)
+I warehouse all data in a Postgre database for later use and reference.
 
-*   ETL in python to SQL Server Database.
-*   Formatted column headers to SQL compatibility.  
+*   ETL in python to PostgreSQL Database.
+*   Formatted column headers to SQL compatibility. 
 
-## [Exploratory data analysis](Code/P7_Code.ipynb) 
+<a name="EDA"></a>  
+
+## [Exploratory data analysis](Code/P6_Code.ipynb) 
 I looked at the distributions of the data and the value counts for the various categorical variables that would be fed into the model. Below are a few highlights from the analysis.
-*   79.63% of customers have churned - Distrubution of features and their effects on churning - Some features have outliers, visualising this allows for greater clarifty on the extent. 
-<img src="images/Churn_barchart_distrib.png" />
-<img src="images/independentfeatures_distrib.png" />
-<img src="images/boxplots.png" />
 
-*   I looked at the correlation the features have
-<img src="images/churn_correlation.png" />
+*   Age has a negative relationship with spending score, like because those in the data that are older spend less and those in the data that are younger spend more.
+*   Annual income and spending score have almost no correlation.   
 
-## [Data Visualisation & Analytics](https://app.powerbi.com/view?r=eyJrIjoiNDExYjQ0OTUtNWI5MC00OTQ5LWFlYmUtYjNkMzE1YzE2NmE0IiwidCI6IjYyZWE3MDM0LWI2ZGUtNDllZS1iZTE1LWNhZThlOWFiYzdjNiJ9&pageName=ReportSection)
-[View Interactive Dashboard](https://app.powerbi.com/view?r=eyJrIjoiNDExYjQ0OTUtNWI5MC00OTQ5LWFlYmUtYjNkMzE1YzE2NmE0IiwidCI6IjYyZWE3MDM0LWI2ZGUtNDllZS1iZTE1LWNhZThlOWFiYzdjNiJ9&pageName=ReportSection)
-*   I created an interactive dashboard to deploy the machine learning model to benefit the business.
-*   I visualised various key features and hihglighted their overall correlation to a customers churn. 
+<img src="images/correlation.png" />
 
-## Business Intelligence
-On Page 2 of the interactive dashboard I have provided the stake holders with the new customer names and the customers that are likely to churn due to their characteristics.
+<a name="FeatEng"></a>  
 
-*   These customers can be offered subsidised deals and incentives to keep them on
-*   Greater engagement with customers could keep some customers on board 
-*   Providing quality customer service can also provide customers with long term value and appreciation for the business
-*   The complaints team should pay particular attention to complaints from customers who are predicted to churn.
-- 96% of unhappy customers dont complain  and 91% of those will simply leave and never come back?
+## [Feature Engineering](Code/P6_Code.ipynb) 
+I kept only 2 columns; annual_income_(k$) and spending_score_(1-100) as they showed no initial correlation. 
 
-## [Feature Engineering](Code/P2_Code.ipynb) 
-I transformed the categorical variable(s) 'geography' and 'gender' into dummy variables. I also split the data into train and tests sets with a test size of 20%.
-*   One Hot encoding to encode values
-*   Using RobustScaler to scale  
+<img src="images/WSS_formula.png"/>
 
-## [ML/DL Model Building](Code/P11_Code.ipynb)
+*   I applied the Within Sum of squares to find the inertia for the optimum number of clusters. Inertia is calculated as the sum of squared distances between data points and the centres of the clusters they belong to. Inertia quantifies the within-cluster variation.
 
-I tried eight different models and evaluated them using initially using accuracy_score and then MSE/RMSE. I chose MSE and RMSE because it is sensitive to outliers, punishes larger errors and is relatively easy to interpret.   
+<img src="images/elbow_point_graph.png"/>
 
-I tried eight different models:
-*   **KN Neighbors Classifier** 
-*   **Linear SVC** 
-*   **Decision Tree Classifier** 
-*   **Random Forest Classifier**
-*   **XGB Classifier** 
-*   **AdaBoost Classifier**  
-*   **Gaussian NB** 
-*   **Quadratic Discriminant Analysis** 
+*   The elbow graph was used to show the best number of clusters, here shown to be 6 for there is a gradual decline in WCSS. 
 
-<img src="images/Crossvalidation.png" />
+  
 
-## [Model performance](Code/P11_Code.ipynb)
-The Quadratic Discriminant Analysis model outperformed the other approaches on the test and validation sets. 
-*   **Quadratic Discriminant Analysis** : Accuracy = 96% 
+<a name="ModelBuild"></a> 
 
-## [Model Optimisation and Evaluation](Code/P11_Code.ipynb)
-In this step, I used GridsearchCV to find the best parameters to optimise the performance of the model.
-Using the best parameters, I improved the model accuracy by **1%**
+## [ML/DL Model Building](Code/P6_Code.ipynb)
 
-*   **Quadratic Discriminant Analysis** : Accuracy = 97% | MSE = 0.03 | RMSE = 0.17 (2dp)
+I applies the KMeans algorithm with 5 clusters and predicted this on the initial input values (annual_income_(k$) and spending_score_(1-100)). 
 
-## [Deployment](https://app.powerbi.com/view?r=eyJrIjoiNDExYjQ0OTUtNWI5MC00OTQ5LWFlYmUtYjNkMzE1YzE2NmE0IiwidCI6IjYyZWE3MDM0LWI2ZGUtNDllZS1iZTE1LWNhZThlOWFiYzdjNiJ9&pageName=ReportSection)
-I built a flask REST API endpoint that was hosted on a local webserver before AWS EC2 deployment. The API endpoint takes in a request value; height and weight and returns predicted BMI index. I also optimised and formatted the frontend using HTML and CSS. 
+```python
+# Training the KMeans Clustering Model
+kmeans = KMeans(n_clusters=5, init='k-means++', random_state=23)
 
-## [Model Evaluation](Code/P11_Code.ipynb)
-*   A confusion matrix showing the accuracy score of 97.25% achieved by the model. 
-<img src="images/Confusionmatrix.png" />
+# return a label for each data point based on their cluster
+Y = kmeans.fit_predict(X)
+print(Y)
+```
 
+<a name="ModelDeploy"></a> 
 
-## [Project Evaluation](Presentation/P11Presentation.pptx) 
-*   WWW
-    *   The end-to-end process
-    *   Deployment and sharing of work 
-*   EBI 
-    *   Better project management and planning would have made this project faster
-    *   Explore GitHub pages deployment through AWS 
+## Deployment
+Seeing the clusters visually shows the clear subgroups within the customers dataset. 
+
+<img src="images/images/customer_groups.png" />
+
+<a name="Prjmanage"></a> 
 
 ## [Project Management (Agile | Scrum)](https://www.atlassian.com/software/jira)
 * Resources used
@@ -130,8 +113,34 @@ I built a flask REST API endpoint that was hosted on a local webserver before AW
     * Confluence
     * Trello 
 
-## Questions and See more projects    
+<a name="PrjEval"></a> 
 
+## [Project Evaluation]() 
+*   WWW
+    *   Completing and implementation of idea. 
+    *   Mathematical understanding 
+*   EBI 
+    *   Larger dataset used 
+    *   Search for better use case. i.e a more complex problem. 
+
+<a name="Lookahead"></a> 
+
+## Looking Ahead
+*   What next
+*   How can this be applied at scale? Research us in business and how to class customers based on several attributes
+
+<a name="Questions"></a> 
+
+## Questions | Contact me 
+For questions, feedback, and contribution requests contact me
+* ### [Click here to email me](mailto:theanalyticsolutions@gmail.com) 
 * ### [See more projects here](https://github.com/MattithyahuData?tab=repositories)
-* ### [Contact me here](mailto:theanalyticsolutions@gmail.com) 
+
+
+
+
+
+
+
+
 
