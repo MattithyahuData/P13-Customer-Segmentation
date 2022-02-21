@@ -66,7 +66,7 @@ I looked at the distributions of the data and the value counts for the various c
 *   Age has a negative relationship with spending score, like because those in the data that are older spend less and those in the data that are younger spend more.
 *   Annual income and spending score have almost no correlation.   
 
-<img src="images/correlation.png" />
+<img src="images/customer_seg_correlation.png" />
 
 <a name="FeatEng"></a>  
 
@@ -103,7 +103,7 @@ print(Y)
 ## Deployment
 Seeing the clusters visually shows the clear subgroups within the customers dataset. 
 
-<img src="images/images/customer_groups.png" />
+<img src="images/customer_groups.png" />
 
 <a name="Prjmanage"></a> 
 
